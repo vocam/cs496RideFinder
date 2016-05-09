@@ -20,7 +20,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final int REQUEST_REGISTER = 0;
 
-    Firebase firebaseRef = new Firebase(Shortcuts.FIREBASE_URL);
+    Firebase firebaseRef = new Firebase(Shortcuts.FIREBASE_URL + "Users");
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,18 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         final EditText editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         final Button buttonRegister = (Button) findViewById(R.id.buttonRegister);
+
+        firebaseRef.createUser(editTextEmail.toString(), editTextPassword.toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+            @Override
+            public void onSuccess(Map<String, Object> result) {
+                System.out.println("Successfully created user account with uid: " + result.get("uid"));
+            }
+            @Override
+            public void onError(FirebaseError firebaseError) {
+                // there was an error
+            }
+        });
+
     }
 
 
